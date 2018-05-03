@@ -1,68 +1,58 @@
 package com.simpleTalk.vo;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import com.alibaba.fastjson.JSONObject;
-
-/**
- * 
- * @author ciker
- * @desc  消息vo
- *
- */
-@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
 public class MessageVo implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -458605369790888112L;
-
-	private String content;
+	//消息id
+	private String messageId;
+	//发送者
+	private String senderId;
+	//接收者
+	private String receiverId;
+	//内容
+	private Object content;
+	//内容类型
+	private Integer type;
 	
-	private String type;
-	
-	private List<String> usernameList;
-	
-	
-	
-	public MessageVo() {
-		super();
+	public String getMessageId() {
+		return messageId;
 	}
-	public MessageVo(String content, String type, List<String> usernameList) {
-		super();
-		this.content = content;
-		this.type = type;
-		this.usernameList = usernameList;
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
 	}
-	public String getContent() {
+	public String getSenderId() {
+		return senderId;
+	}
+	public void setSenderId(String senderId) {
+		this.senderId = senderId;
+	}
+	public String getReceiverId() {
+		return receiverId;
+	}
+	public void setReceiverId(String receiverId) {
+		this.receiverId = receiverId;
+	}
+	public Object getContent() {
 		return content;
 	}
-	public void setContent(String content) {
+	public void setContent(Object content) {
 		this.content = content;
 	}
-	public String getType() {
+	public Integer getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
-	public List<String> getUsernameList() {
-		return usernameList;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
-	public void setUsernameList(List<String> usernameList) {
-		this.usernameList = usernameList;
-	}
-	@Override
-	public String toString() {
-		JSONObject json=new JSONObject();
-		json.put("message", content);
-		json.put("list", usernameList);
-		json.put("type", type);
-		return json.toJSONString();
-	}
+	
 	
 	
 }

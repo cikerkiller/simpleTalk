@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.simpleTalk.dao.GroupMapper" >
+  <resultMap id="BaseResultMap" type="com.simpleTalk.pojo.Group" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="owner_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="group_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="group_desc" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="columns1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="columns2" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="columns3" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, owner_id, group_name, group_desc, create_time, update_time, columns1, columns2, 
+    columns3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from talk_group
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from talk_group
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.simpleTalk.pojo.Group" >
+    insert into talk_group (id, owner_id, group_name, 
+      group_desc, create_time, update_time, 
+      columns1, columns2, columns3
+      )
+    values (#{id,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, 
+      #{groupDesc,jdbcType=VARCHAR}, now(), now(), 
+      #{columns1,jdbcType=VARCHAR}, #{columns2,jdbcType=VARCHAR}, #{columns3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.simpleTalk.pojo.Group" >
+    insert into talk_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ownerId != null" >
+        owner_id,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
+      <if test="groupDesc != null" >
+        group_desc,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="columns1 != null" >
+        columns1,
+      </if>
+      <if test="columns2 != null" >
+        columns2,
+      </if>
+      <if test="columns3 != null" >
+        columns3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null" >
+        #{ownerId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDesc != null" >
+        #{groupDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="columns1 != null" >
+        #{columns1,jdbcType=VARCHAR},
+      </if>
+      <if test="columns2 != null" >
+        #{columns2,jdbcType=VARCHAR},
+      </if>
+      <if test="columns3 != null" >
+        #{columns3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.simpleTalk.pojo.Group" >
+    update talk_group
+    <set >
+      <if test="ownerId != null" >
+        owner_id = #{ownerId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDesc != null" >
+        group_desc = #{groupDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="columns1 != null" >
+        columns1 = #{columns1,jdbcType=VARCHAR},
+      </if>
+      <if test="columns2 != null" >
+        columns2 = #{columns2,jdbcType=VARCHAR},
+      </if>
+      <if test="columns3 != null" >
+        columns3 = #{columns3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.simpleTalk.pojo.Group" >
+    update talk_group
+    set owner_id = #{ownerId,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
+      group_desc = #{groupDesc,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      columns1 = #{columns1,jdbcType=VARCHAR},
+      columns2 = #{columns2,jdbcType=VARCHAR},
+      columns3 = #{columns3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

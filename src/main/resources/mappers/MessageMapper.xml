@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.simpleTalk.dao.MessageMapper" >
+  <resultMap id="BaseResultMap" type="com.simpleTalk.pojo.Message" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sender_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="receiver_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  
+  <resultMap type="com.simpleTalk.pojo.SpecialResult" id="SpecialResult">
+  	<constructor>
+      	<arg column="sender_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+  		<arg column="count" jdbcType="VARCHAR" javaType="java.lang.String" />
+  	</constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sender_id, receiver_id, content, type, status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from talk_message
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from talk_message
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.simpleTalk.pojo.Message" >
+    insert into talk_message (id, sender_id, receiver_id, 
+      content, type, status, 
+      create_time, update_time)
+    values (#{id,jdbcType=VARCHAR}, #{senderId,jdbcType=VARCHAR}, #{receiverId,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      now(),  now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.simpleTalk.pojo.Message" >
+    insert into talk_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="senderId != null" >
+        sender_id,
+      </if>
+      <if test="receiverId != null" >
+        receiver_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="senderId != null" >
+        #{senderId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverId != null" >
+        #{receiverId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.simpleTalk.pojo.Message" >
+    update talk_message
+    <set >
+      <if test="senderId != null" >
+        sender_id = #{senderId,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverId != null" >
+        receiver_id = #{receiverId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.simpleTalk.pojo.Message" >
+    update talk_message
+    set sender_id = #{senderId,jdbcType=VARCHAR},
+      receiver_id = #{receiverId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listMessage" parameterType="map" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from talk_message
+    where sender_id=#{senderId} and receiver_id=#{receiverId}
+  </select>
+  
+  <update id="updateMessageStatus" parameterType="map">
+  	update talk_message
+    set status = #{status} where  sender_id=#{senderId} and receiver_id=#{receiverId}
+  </update>
+  
+  <update id="deleteMessage" parameterType="map">
+  	update talk_message
+    set status = #{status} where  sender_id=#{senderId} and id = #{messageId}
+  </update>
+  <select id="unreadListMessage" parameterType="string" resultMap="SpecialResult">
+  	SELECT w.sender_id ,COUNT(*) as count FROM (SELECT t.sender_id FROM talk_message t WHERE  t.`status`=0 AND t.`receiver_id`=#{receiverId}) w GROUP BY w.sender_id
+  </select>
+</mapper>
